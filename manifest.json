@@ -1,0 +1,14 @@
+{
+  "name": "Zpay (Demo)",
+  "short_name": "Zpay",
+  "description": "Zpay demo payment app - sum dik tak a kal lo",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#f5f4fb",
+  "theme_color": "#5b3df5",
+  "icons": [
+    { "src": "icon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any" }
+  ]
+}

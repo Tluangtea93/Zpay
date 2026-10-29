@@ -1,0 +1,201 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#5b3df5">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <title>Zpay</title>
+  <link rel="manifest" href="manifest.json">
+  <link rel="icon" href="icon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div id="app">
+  <div class="demo-banner">DEMO APP · Sum dik tak a ni lo</div>
+
+  <!-- ============ HOME ============ -->
+  <section class="view active" id="v-home">
+    <header class="top">
+      <div class="brand"><span class="logo" data-logo></span><b>Zpay</b></div>
+      <button class="avatar-btn" id="home-avatar" data-tab="settings" aria-label="Settings"></button>
+    </header>
+
+    <button class="hero" data-act="scan">
+      <span class="hero-ic" data-icon="scan"></span>
+      <span class="hero-tx"><b>Scan any QR code</b><small>UPI QR scan a, pay vat rawh</small></span>
+    </button>
+
+    <div class="grid">
+      <button class="qa" data-act="contacts"><span class="ic" data-icon="people"></span><span>Contacts</span></button>
+      <button class="qa" data-act="phone"><span class="ic" data-icon="phone"></span><span>Phone no.</span></button>
+      <button class="qa" data-act="upiid"><span class="ic" data-icon="at"></span><span>UPI ID</span></button>
+      <button class="qa" data-act="recharge"><span class="ic" data-icon="zap"></span><span>Recharge</span></button>
+      <button class="qa" data-act="bills"><span class="ic" data-icon="file"></span><span>Bills</span></button>
+      <button class="qa" data-act="receive"><span class="ic" data-icon="qr"></span><span>Receive</span></button>
+    </div>
+
+    <h3 class="sec">People</h3>
+    <div class="people" id="people"></div>
+
+    <div class="card bal">
+      <div>
+        <small>Bank account · Demo</small>
+        <div class="bal-val" id="bal-val">₹ ••••••</div>
+      </div>
+      <button class="chip" id="bal-btn">Balance en</button>
+    </div>
+
+    <div class="row-head"><h3 class="sec">Recent</h3><button class="link" data-tab="history">Zawng zawng</button></div>
+    <div class="card list" id="recent"></div>
+  </section>
+
+  <!-- ============ SCAN ============ -->
+  <section class="view scan" id="v-scan">
+    <video id="cam" playsinline muted autoplay></video>
+    <div class="scan-shade"></div>
+    <div class="scan-top">
+      <button class="round" data-back aria-label="Back"><span data-icon="back"></span></button>
+      <b>Scan QR code</b>
+      <span class="round ghost"></span>
+    </div>
+    <div class="frame"><i></i><i></i><i></i><i></i><div class="laser"></div></div>
+    <p class="scan-msg" id="scan-msg">QR code chu frame chhungah dah rawh</p>
+    <div class="scan-bot">
+      <label class="pill">
+        <span data-icon="image"></span> Gallery
+        <input type="file" id="scan-file" accept="image/*" hidden>
+      </label>
+      <button class="pill" id="scan-demo"><span data-icon="qr"></span> Demo QR</button>
+    </div>
+  </section>
+
+  <!-- ============ CONTACT LIST ============ -->
+  <section class="view" id="v-contacts">
+    <header class="bar"><button class="round" data-back aria-label="Back"><span data-icon="back"></span></button><h2 id="c-title">Contacts</h2></header>
+    <input class="search" id="c-search" type="search" placeholder="Hming hmanga zawng rawh" autocomplete="off">
+    <div class="card list" id="c-list"></div>
+  </section>
+
+  <!-- ============ PAY ============ -->
+  <section class="view" id="v-pay">
+    <header class="bar"><button class="round" data-back aria-label="Back"><span data-icon="back"></span></button><h2>Pay</h2></header>
+    <div class="payee">
+      <div id="pay-av"></div>
+      <b id="pay-name"></b>
+      <small id="pay-upi"></small>
+    </div>
+    <div class="amount" id="pay-amt">₹0</div>
+    <input class="note" id="pay-note" type="text" maxlength="40" placeholder="Note (a ngai chuan)" autocomplete="off">
+    <div class="keys" id="pay-keys"></div>
+    <button class="btn primary big" id="pay-go" disabled>Pay</button>
+  </section>
+
+  <!-- ============ PIN ============ -->
+  <section class="view" id="v-pin">
+    <header class="bar"><button class="round" data-back aria-label="Back"><span data-icon="back"></span></button><h2>Zpay PIN</h2></header>
+    <div class="pin-wrap">
+      <span class="logo big" data-logo></span>
+      <p id="pin-sub" class="pin-sub"></p>
+      <div class="dots" id="pin-dots"><i></i><i></i><i></i><i></i></div>
+      <small class="hint">Demo PIN: <b id="pin-hint">1234</b></small>
+    </div>
+    <div class="keys" id="pin-keys"></div>
+  </section>
+
+  <!-- ============ RESULT ============ -->
+  <section class="view" id="v-result" data-state="proc">
+    <div class="res proc">
+      <div class="spinner"></div>
+      <p>Payment process mek...</p>
+    </div>
+    <div class="res ok">
+      <svg class="check" viewBox="0 0 52 52"><circle cx="26" cy="26" r="24"/><path d="M14 27l8 8 16-17"/></svg>
+      <h2 id="rc-amt"></h2>
+      <p id="rc-to" class="rc-to"></p>
+      <div class="card receipt">
+        <div><span>UPI ID</span><b id="rc-upi"></b></div>
+        <div><span>Transaction ID</span><b id="rc-id"></b></div>
+        <div><span>Hun</span><b id="rc-time"></b></div>
+      </div>
+      <p class="demo-note">DEMO · Sum dik tak a kal lo</p>
+      <button class="btn primary big" data-act="done">Done</button>
+    </div>
+    <div class="res bad">
+      <svg class="cross" viewBox="0 0 52 52"><circle cx="26" cy="26" r="24"/><path d="M18 18l16 16M34 18L18 34"/></svg>
+      <h2>Payment a hlawhtling lo</h2>
+      <p id="rc-err" class="rc-to"></p>
+      <button class="btn big" data-act="done">Back</button>
+    </div>
+  </section>
+
+  <!-- ============ HISTORY ============ -->
+  <section class="view" id="v-history">
+    <header class="bar"><h2>Transaction history</h2></header>
+    <div class="card list" id="hist"></div>
+  </section>
+
+  <!-- ============ MY QR ============ -->
+  <section class="view" id="v-myqr">
+    <header class="bar"><h2>My QR code</h2></header>
+    <div class="qr-card card">
+      <div id="qr-av"></div>
+      <b id="qr-name"></b>
+      <small id="qr-upi"></small>
+      <canvas id="qr-canvas" width="264" height="264"></canvas>
+      <p class="qr-help">Zpay hmang midang phone hian he QR hi scan se, pay theih a ni.</p>
+    </div>
+    <button class="btn big" data-act="demo-receive"><span data-icon="zap"></span> Demo: sum dawn nghal (sound test)</button>
+  </section>
+
+  <!-- ============ SETTINGS ============ -->
+  <section class="view" id="v-settings">
+    <header class="bar"><h2>Settings</h2></header>
+    <div class="card form">
+      <label>I hming
+        <input id="set-name" type="text" maxlength="30" autocomplete="off">
+      </label>
+      <label>I UPI ID
+        <input id="set-upi" type="text" readonly>
+      </label>
+      <label>Demo PIN (digit 4)
+        <input id="set-pin" type="text" inputmode="numeric" maxlength="4" autocomplete="off">
+      </label>
+      <label class="switch"><span>Payment sound</span><input id="set-sound" type="checkbox"></label>
+      <label class="switch"><span>Voice (sum dawn / pek tihhriat)</span><input id="set-voice" type="checkbox"></label>
+    </div>
+    <button class="btn big" data-act="sound-test"><span data-icon="zap"></span> Sound test</button>
+    <button class="btn big danger" data-act="reset">Demo data zawng zawng reset</button>
+    <p class="demo-note">Zpay hi demo app a ni. Sum dik tak a kal lo, bank pawh a hmang lo.</p>
+  </section>
+
+  <!-- ============ NAV ============ -->
+  <nav id="nav">
+    <button data-tab="home"><span data-icon="home"></span><small>Home</small></button>
+    <button data-tab="history"><span data-icon="clock"></span><small>History</small></button>
+    <button class="fab" data-act="scan" aria-label="Scan QR"><span data-icon="scan"></span></button>
+    <button data-tab="myqr"><span data-icon="qr"></span><small>My QR</small></button>
+    <button data-tab="settings"><span data-icon="user"></span><small>Me</small></button>
+  </nav>
+
+  <!-- ============ SHEET / TOAST / FLASH ============ -->
+  <div id="sheet" class="sheet">
+    <div class="sheet-bg" data-close-sheet></div>
+    <div class="sheet-box">
+      <div class="grab"></div>
+      <h3 id="sheet-title"></h3>
+      <p id="sheet-msg" class="sheet-msg"></p>
+      <form id="sheet-form" autocomplete="off"></form>
+    </div>
+  </div>
+  <div id="toast" role="status" aria-live="polite"></div>
+  <div id="flash" class="flash"><div class="flash-box">
+    <svg class="check" viewBox="0 0 52 52"><circle cx="26" cy="26" r="24"/><path d="M14 27l8 8 16-17"/></svg>
+    <h2 id="flash-t"></h2><p id="flash-s"></p>
+  </div></div>
+</div>
+
+<script src="qrcode.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
